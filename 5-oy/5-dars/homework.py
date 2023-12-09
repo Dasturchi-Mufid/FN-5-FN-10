@@ -61,6 +61,7 @@ class BankQueue:
     def get_queue(self):
 
         """Navbat olish uchun method"""
+
         if BankQueue.opened:
             if self.id not in BankQueue.queues:
                 BankQueue.queues.append(self.id)
@@ -174,6 +175,9 @@ class BankQueue:
 
     @staticmethod
     def queue():
+
+        """Ayni vaqtdagi navbatlarni ko`rsatadi."""
+        
         print('-'*100)
         print(f'Ayni vaqtdagi navbatlar ko`rsatgichi: {BankQueue.queues}')
         print('-'*100)
