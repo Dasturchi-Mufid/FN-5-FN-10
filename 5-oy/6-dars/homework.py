@@ -28,16 +28,16 @@ class Week:
             case _:
                 raise TypeError('Week.__doc__ orqali bu classdan qanday qilib ishlash mumkinligi haqida tanishib chiqing.')
 
-    def __iter__(self):
-        return self
-    
-    def __next__(self):
-        if self.index <= len(self.days)-1:
-            res = self.days[self.index]
-            self.index += 1
-            return res
-        else:
-            raise StopIteration
+        def __iter__(self):
+            return self
+        
+        def __next__(self):
+            if self.index <= len(self.days)-1:
+                res = self.days[self.index]
+                self.index += 1
+                return res
+            else:
+                raise StopIteration
 
 
 class Month:
