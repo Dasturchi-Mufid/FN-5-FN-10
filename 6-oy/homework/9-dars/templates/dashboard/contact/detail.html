@@ -1,0 +1,72 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-10">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                <div class="d-flex justify-content-around align-items-center">
+                    <a href="{% url 'contact-edit' contact.id %}" class="btn btn-primary">O`zgartirish</a>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><br> 
+                        <div class="row">
+                            <div class="col-2"></div>
+                            <div class="col-8">
+                                 <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="header-title mb-3">Service haqida batafsil</h4>
+                
+                                            <div class="table-responsive">
+                                                <table class="table mb-0">
+                                                    <thead class="table-light">
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td><strong>Ism</strong></td>
+                                                        <td>{{contact.name}}</td>
+                                                    </tr>                                        
+                                                    <tr>
+                                                        <td><strong>Email</strong></td>
+                                                        <td>{{contact.email}}</td>
+                                                    </tr>                                        
+                                                    <tr>
+                                                        <td><strong>Telefon raqam</strong></td>
+                                                        <td>{{contact.phone}}</td>
+                                                    </tr>                                        
+                                                    <tr>
+                                                        <td><strong>Tana qism</strong></td>
+                                                        <td>{{contact.body}}</td>
+                                                    </tr>                                        
+                                                    <tr>
+                                                        <td><strong>Sana</strong></td>
+                                                        <td>{{contact.created_at}}</td>
+                                                    </tr>                                        
+                                                    <tr>
+                                                        <td><strong>O`qilganmi?</strong></td>
+                                                        {% if contact.is_show %}
+                                                        <td>O`qilgan</td>
+                                                        {% else %}
+                                                        <td>O`qilmagan</td>
+                                                        {% endif %}
+                                                    </tr>                                        
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <!-- end table-responsive -->
+                
+                                        </div>
+                                    </div>
+                                </div> <!-- end card-->
+                        </div> <!-- end col -->
+                    </div>
+                </div>
+                    <!-- container -->
+
+            </div>
+                <!-- content -->
+{% endblock content %}

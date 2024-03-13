@@ -1,0 +1,73 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="d-flex justify-content-around align-items-center">
+                    <a href="{% url 'price-edit' price.id %}" class="btn btn-primary">O`zgartirish</a>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#centermodal">O`chirish</button>
+                    <div class="modal fade" id="centermodal" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="myCenterModalLabel">Priceni o`chirmoqchimisiz? </h4>
+                                    <form method="get" action="{% url 'price-delete' price.id %}">
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                                        <div class="modal-body">
+                                            <input type="checkbox" class="form-check-input" id="customCheckcolor7" required>
+                                            <label for="chkb">Ha</label> <br> <br>
+                                            <button type="button" class="btn btn-dark" data-bs-dismiss="modal" aria-hidden="true">Qaytish</button>
+                                            <button class="btn btn-danger" type="submit">O`chirish</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div><br> 
+                        <div class="row">
+                            <div class="col-2"></div>
+                            <div class="col-8">
+                                 <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="header-title mb-3">Service haqida batafsil</h4>
+                
+                                            <div class="table-responsive">
+                                                <table class="table mb-0">
+                                                    <thead class="table-light">
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td><strong>Sarlavha</strong></td>
+                                                        <td>{{price.title}}</td>
+                                                    </tr>                                        
+                                                    <tr>
+                                                        <td><strong>Sarlavha</strong></td>
+                                                        <td>{{price.price}}</td>
+                                                    </tr>                                        
+                                                    <tr>
+                                                        <td><strong>Sarlavha</strong></td>
+                                                        <td>{{price.body}}</td>
+                                                    </tr>                                        
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <!-- end table-responsive -->
+                
+                                        </div>
+                                    </div>
+                                </div> <!-- end card-->
+                        </div> <!-- end col -->
+                    </div>
+                </div>
+                    <!-- container -->
+
+            </div>
+                <!-- content -->
+{% endblock content %}
