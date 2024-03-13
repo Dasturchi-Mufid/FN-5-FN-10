@@ -9,23 +9,32 @@ from django.db.models import Q
 @login_required(login_url='login')
 def index(request):
     contacts = models.Contact.objects.filter(is_show=False).count()
+    prices = models.Price.objects.all().count()
+    services = models.Service.objects.all().count()
+    banners = models.Banner.objects.all().count()
 
     context = {
-        'contacts':contacts
+        'contacts':contacts,
+        'prices':prices,
+        'services':services,
+        'banners':banners,
     }
     return render(request,'dashboard/index.html',context)
 
 @login_required(login_url='login')
 def create_banner(request):
     if request.method == "POST":
-        title = request.POST['title']
-        body = request.POST['body']
-        models.Banner.objects.create(
-            title=title,
-            body=body,
-        )
-        messages.success(request, 'Banner muvaffaqiyatli yaratildi')
-        return redirect('banner-list')
+        try:
+            title = request.POST['title']
+            body = request.POST['body']
+            models.Banner.objects.create(
+                title=title,
+                body=body,
+            )
+            messages.success(request, 'Banner muvaffaqiyatli yaratildi')
+            return redirect('banner-list')
+        except:
+            messages.error(request,'Banner yaratishda xatolik bor')
     return render(request, 'dashboard/banner/create.html')
 
 @login_required(login_url='login')
@@ -46,11 +55,14 @@ def detail_banner(request,id):
 def edit_banner(request,id):
     banner = models.Banner.objects.get(id=id)
     if request.method == 'POST':
-        banner.title = request.POST.get('title')
-        banner.body = request.POST.get('body')
-        banner.save()
-        messages.success(request, 'Banner muvaffaqiyatli o`zgartirildi')
-        return redirect('banner-detail',banner.id)
+        try:
+            banner.title = request.POST.get('title')
+            banner.body = request.POST.get('body')
+            banner.save()
+            messages.success(request, 'Banner muvaffaqiyatli o`zgartirildi')
+            return redirect('banner-detail',banner.id)
+        except:
+            messages.error(request,'Banner o`zgartirishda xatolik bor')
     context = {
             'banner':banner
         }
@@ -65,16 +77,20 @@ def delete_banner(request, id):
 @login_required(login_url='login')
 def create_service(request):
     if request.method == 'POST' and request.FILES['file']:
-        name = request.POST.get('name')
-        body = request.POST.get('body')
-        icon = request.FILES.get('file')
-        models.Service.objects.create(
-            name=name,
-            body=body,
-            icon=icon
-        )
-        messages.success(request, 'Service muvaffaqiyatli yaratildi')
-        return redirect('service-list')
+        try:
+            name = request.POST.get('name')
+            body = request.POST.get('body')
+            icon = request.FILES.get('file')
+            models.Service.objects.create(
+                name=name,
+                body=body,
+                icon=icon
+            )
+            messages.success(request, 'Service muvaffaqiyatli yaratildi')
+            return redirect('service-list')
+        except:
+            messages.error(request,'Service yaratishda xatolik bor')
+            return redirect('service-list')
     return render(request,'dashboard/service/create.html')
 
 @login_required(login_url='login')
@@ -95,13 +111,17 @@ def detail_service(request,id):
 def edit_service(request,id):
     service = models.Service.objects.get(id=id)
     if request.method == 'POST':
-        service.name = request.POST.get('name')
-        service.body = request.POST.get('body')
-        if request.FILES:
-            service.icon = request.FILES.get('icon')
-        service.save()
-        messages.success(request, 'Service muvaffaqiyatli o`zgartirildi')
-        return redirect('service-detail',service.id)
+        try:
+            service.name = request.POST.get('name')
+            service.body = request.POST.get('body')
+            if request.FILES:
+                service.icon = request.FILES.get('icon')
+            service.save()
+            messages.success(request, 'Service muvaffaqiyatli o`zgartirildi')
+            return redirect('service-detail',service.id)
+        except:
+            messages.error(request,'Service o`zgartirishda xatolik bor')
+            redirect('service-detail',service.id)
     
     context = {'service':service}
 
@@ -116,12 +136,16 @@ def delete_service(request, id):
 @login_required(login_url='login')
 def create_aboutus(request):
     if request.method == 'POST':
-        body = request.POST.get('body')
-        models.AboutUs.objects.create(
-            body=body
-        )
-        messages.success(request, 'AboutUs muvaffaqiyatli yaratildi')
-        return redirect('aboutus-list')
+        try:
+            body = request.POST.get('body')
+            models.AboutUs.objects.create(
+                body=body
+            )
+            messages.success(request, 'AboutUs muvaffaqiyatli yaratildi')
+            return redirect('aboutus-list')
+        except:
+            messages.error(request,'AboutUs yaratishda xatolik bor')
+            return redirect('aboutus-list')
     return render(request,'dashboard/aboutus/create.html')
 
 @login_required(login_url='login')
@@ -142,10 +166,14 @@ def detail_aboutus(request,id):
 def edit_aboutus(request,id):
     aboutus = models.AboutUs.objects.get(id=id)
     if request.method == 'POST':
-        aboutus.body = request.POST.get('body')
-        aboutus.save()
-        messages.success(request, 'AboutUs muvaffaqiyatli o`zgartirildi')
-        return redirect('aboutus-detail',aboutus.id)
+        try:
+            aboutus.body = request.POST.get('body')
+            aboutus.save()
+            messages.success(request, 'AboutUs muvaffaqiyatli o`zgartirildi')
+            return redirect('aboutus-detail',aboutus.id)
+        except:
+            messages.error(request,'AboutUs o`zgartirishda xatolik bor')
+            redirect('aboutus-detail',aboutus.id)
     context = {'aboutus':aboutus}
     return render(request,'dashboard/aboutus/edit.html',context)
 
@@ -158,16 +186,20 @@ def delete_aboutus(request, id):
 @login_required(login_url='login')
 def create_price(request):
     if request.method == 'POST':
-        title = request.POST.get('title')
-        price = request.POST.get('price')
-        body = request.POST.get('body')
-        models.Price.objects.create(
-            title=title,
-            price=price,
-            body=body
-        )
-        messages.success(request, 'Price muvaffaqiyatli yaratildi')
-        return redirect('price-list')
+        try:
+            title = request.POST.get('title')
+            price = request.POST.get('price')
+            body = request.POST.get('body')
+            models.Price.objects.create(
+                title=title,
+                price=price,
+                body=body
+            )
+            messages.success(request, 'Price muvaffaqiyatli yaratildi')
+            return redirect('price-list')
+        except:
+            messages.error(request,'Price yaratishda xatolik bor')
+            return redirect('price-list')
     return render(request,'dashboard/price/create.html')
 
 @login_required(login_url='login')
@@ -188,12 +220,16 @@ def detail_price(request,id):
 def edit_price(request,id):
     price = models.Price.objects.get(id=id)
     if request.method == 'POST':
-        price.title = request.POST.get('title')
-        price.body = request.POST.get('body')
-        price.price = request.POST.get('price')
-        price.save()
-        messages.success(request, 'Price muvaffaqiyatli o`zgartirildi')
-        return redirect('price-detail',price.id)
+        try:
+            price.title = request.POST.get('title')
+            price.body = request.POST.get('body')
+            price.price = request.POST.get('price')
+            price.save()
+            messages.success(request, 'Price muvaffaqiyatli o`zgartirildi')
+            return redirect('price-detail',price.id)
+        except:
+            messages.error(request,'Price o`zgartirishda xatolik bor')
+            redirect('price-detail',price.id)
     context = {'price':price}
     return render(request,'dashboard/price/edit.html',context)
 
@@ -219,35 +255,49 @@ def detail_contact(request,id):
 def edit_contact(request,id):
     contact = models.Contact.objects.get(id=id)
     if request.method == 'POST':
-        contact.is_show = bool(int(request.POST.get('is_show')))
-        contact.save()
-        messages.success(request, 'Contact muvaffaqiyatli o`zgartirildi')
-        return redirect('contact-detail',contact.id)
+        try:
+            contact.is_show = bool(int(request.POST.get('is_show')))
+            contact.save()
+            messages.success(request, 'Contact muvaffaqiyatli o`zgartirildi')
+            return redirect('contact-detail',contact.id)
+        except:
+            messages.error(request,'Contact o`zgartirishda xatolik bor')
+            redirect('contact-detail',contact.id)
     context = {'contact':contact}
     return render(request,'dashboard/contact/edit.html',context)
 
 def register(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        password_confirm = request.POST.get('password_confirm')
-        if password == password_confirm:
-            User.objects.create_user(username=username, password=password)
-            user = authenticate(username=username, password=password)
-            login(request, user)
+        try:
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            password_confirm = request.POST.get('password_confirm')
+            if password == password_confirm:
+                User.objects.create_user(username=username, password=password)
+                user = authenticate(username=username, password=password)
+                login(request, user)
+                messages.error(request,'Ro`yhatdan o`tish muvaffaqiyatli bajarilmadi')
+                return redirect('dashboard')
+        except:
+            messages.error(request,'Ro`yhatdan o`tish muvaffaqiyatli bajarilmadi')
             return redirect('dashboard')
     return render(request,'dashboard/auth/register.html')
 
 def log_in(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            login(request, user)
+        try:
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.success(request,'Kirish muvaffaqiyatli amalga oshirildi')
+                return redirect('dashboard')
+            else:
+                return render(request,'dashboard/auth/login.html')
+        except:
+            messages.error(request,'Kirish muvaffaqiyatli amalga oshirilmadi')
             return redirect('dashboard')
-        else:
-            return render(request,'dashboard/auth/login.html')
     return render(request,'dashboard/auth/login.html')
 
 def log_out(request):
